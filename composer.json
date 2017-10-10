@@ -1,0 +1,42 @@
+{
+    "name": "simmatrix/laravel-ach-processor",
+    "description": "Handles direct bank transfer (ACH payment). Currently supports HSBC and UOB banks.",
+    "type": "library",
+    "keywords": [
+        "hsbc",
+        "uob",
+        "automated clearing house",
+        "ach"
+    ],
+    "require": {
+        "illuminate/support": "~5.1",
+        "php": "~5.5|~7.0"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "~2.3",
+        "phpunit/phpunit": "~4.0||~5.0",
+        "fzaninotto/faker": "~1.4",
+        "orchestra/testbench": "~3.0",
+        "illuminate/database": "~5.1",
+        "illuminate/filesystem": "~5.1"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Vince Wong",
+            "email": "simmatrix100@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "classmap": [
+            "tests/TestCase.php"
+        ],
+        "psr-4": {
+            "Simmatrix\\ACHProcessor\\": "src"
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    }
+}
