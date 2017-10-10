@@ -11,7 +11,7 @@ abstract class ACHResultAdapterAbstract
     /**
      * @var String
      */
-    protected $columnDelimiter = ',';
+    protected $columnDelimiter = '';
 
     /**
      * @var Array

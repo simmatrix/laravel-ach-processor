@@ -40,7 +40,7 @@ class HsbcAchUploadProcessorFactory
         $ach -> setBeneficiaryLines($beneficiary_lines);
         $ach -> setIdentifier($file_reference);
         $ach -> setFileName('hsbc_ach_'.time());
-        $ach -> setFileExtension('csv');
+        $ach -> setFileExtension('txt');
         return $ach;
     }
 

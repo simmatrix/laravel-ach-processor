@@ -42,7 +42,7 @@ class ACHUploadProcessor implements Stringable
     /**
      * @var String
      */
-    protected $columnDelimiter = ",";
+    protected $columnDelimiter = "";
 
     /**
      * @var String
