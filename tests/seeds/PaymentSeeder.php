@@ -22,6 +22,8 @@ class PaymentSeeder extends Seeder
             $user_seeds[]= [
                 'fullname' => $faker -> firstname() . ' ' . $faker -> firstName() . ' ' . $faker -> lastName(),
                 'account_number' => $this -> randomNumber(20),
+                'bank_code' => $this -> randomNumber(4),
+                'bank_branch_code' => $this -> randomNumber(4),
                 'ic_number' => $this -> randomNumber(12),
             ];
         }

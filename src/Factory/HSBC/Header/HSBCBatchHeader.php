@@ -18,7 +18,6 @@ use Simmatrix\ACHProcessor\Factory\Column\VariableLengthStringColumnFactory;
 
 class HSBCBatchHeader extends \Simmatrix\ACHProcessor\Line\Header implements Stringable
 {
-    const FILE_REFERENCE_PREFIX = 'IFILEPYT_';
     const FIRST_PARTY_RECORD_TYPE = 1; // 1 stands for first party
     const COUNTRY_CODE = 'MY';
     const GROUP_MEMBER = 'HSBC';
@@ -59,15 +58,4 @@ class HSBCBatchHeader extends \Simmatrix\ACHProcessor\Line\Header implements Str
         $line -> setColumns($columns);
         return $line;
     }
-
-    /**
-     * @return String
-     */
-    public function getFileReference()
-    {
-        // fix to the current minute
-        $time = strtotime(date('Y-m-d H:i:00'));
-        return self::FILE_REFERENCE_PREFIX.$time;
-    }
-
 }

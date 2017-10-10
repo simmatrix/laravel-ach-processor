@@ -16,6 +16,8 @@ class CreateTestUsers extends Migration
             $table -> increments('id');
             $table -> string('fullname');
             $table -> string('account_number');
+            $table -> string('bank_code');
+            $table -> string('bank_branch_code');
             $table -> string('ic_number');
         });
 

@@ -33,18 +33,17 @@ class HSBCBeneficiaryFactory
      * @param String The key to read the config from
      * @return BeneficiaryLine
      */
-    public static function create(BeneficiaryAdapterInterface $beneficiary, $config_key)
+    public static function create(BeneficiaryAdapterInterface $beneficiary, $config_key, $file_reference)
     {
         $beneficiary_line = new BeneficiaryLine($beneficiary);
-        $beneficiary_line -> setLine(static::getLine($beneficiary, $config_key));
+        $beneficiary_line -> setLine(static::getLine($beneficiary, $config_key, $file_reference));
         return $beneficiary_line;
     }
 
     /**
      * @param BeneficiaryAdapterInterface
-     * @param String The key to read the config from
-     */
-    public static function getLine(BeneficiaryAdapterInterface $beneficiary, $config_key )
+     * @param String The key to read the config from     */
+    public static function getLine(BeneficiaryAdapterInterface $beneficiary, $config_key, $file_reference)
     {
         $line = new Line($config_key);
 
@@ -57,12 +56,12 @@ class HSBCBeneficiaryFactory
             'payment_method'                    => RightPaddedStringColumnFactory::create(SELF::PAYMENT_METHOD, $length = 2, $label = 'payment_method'),
             'cheque_type'                       => RightPaddedStringColumnFactory::create(SELF::CHEQUE_TYPE, $length = 3, $label = 'cheque_type'),
             'payment_currency'                  => ConfigurableStringColumnFactory::create($config = $line -> config, $config_key = 'payment_currency', $label = 'payment_currency', $default_value = SELF::PAYMENT_CURRENCY, $max_length = 3),
-            'corresponding_bank'                => RightPaddedStringColumnFactory::create(SELF::CORRESPONDING_BANK, $length = 4, $label = 'corresponding_bank'),
-            'corresponding_branch'              => RightPaddedStringColumnFactory::create(SELF::CORRESPONDING_BRANCH, $length = 4, $label = 'corresponding_branch'),
+            'corresponding_bank'                => RightPaddedStringColumnFactory::create($beneficiary -> getBankCode(), $length = 4, $label = 'corresponding_bank'),
+            'corresponding_branch'              => RightPaddedStringColumnFactory::create($beneficiary -> getBankBranchCode(), $length = 4, $label = 'corresponding_branch'),
             'second_party_account_number'       => RightPaddedStringColumnFactory::create($beneficiary -> getAccountNumber(), $length = 20, $label = 'second_party_account_number'),
             'next_payment_date'                 => RightPaddedStringColumnFactory::create(SELF::NEXT_PAYMENT_DATE, $length = 8, $label = 'next_payment_date'),
             'second_party_description'          => RightPaddedStringColumnFactory::create($beneficiary -> getPayeeName(), $length = 20, $label = 'second_party_description'),
-            'second_party_reference'            => RightPaddedStringColumnFactory::create($beneficiary -> getSecondPartyReference(), $length = 12, $label = 'second_party_reference'),
+            'second_party_reference'            => RightPaddedStringColumnFactory::create($file_reference, $length = 12, $label = 'second_party_reference'),
             'reserved'                          => RightPaddedStringColumnFactory::create(SELF::RESERVED, $length = 26, $label = 'reserved'),
         ];
 

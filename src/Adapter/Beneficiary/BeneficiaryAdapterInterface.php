@@ -23,14 +23,20 @@ interface BeneficiaryAdapterInterface
     public function getAccountNumber();
 
     /**
+     * This is the code of the bank of the beneficiary (Maximum length: 4)
+     * @return string
+     */
+    public function getBankCode();
+
+    /**
+     * This is the code of the bank branch of the beneficiary (Maximum length: 4)
+     * @return string
+     */
+    public function getBankBranchCode();
+
+    /**
      * This is the account name of the beneficiary (Maximum length: 20)
      * @return string
      */
     public function getPayeeName();
-
-    /**
-     * This can either be the IC number or the company registration number (Maximum length: 12)
-     * @return string
-     */
-    public function getSecondPartyReference();
 }

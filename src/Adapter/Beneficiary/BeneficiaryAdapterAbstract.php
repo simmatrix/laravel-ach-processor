@@ -10,6 +10,8 @@ abstract class BeneficiaryAdapterAbstract implements BeneficiaryAdapterInterface
     protected $userID;
     protected $paymentAmount;
     protected $accountNumber;
+    protected $bankCode;
+    protected $bankBranchCode;
     protected $payeeName;
     protected $secondPartyReference;
 
@@ -44,6 +46,24 @@ abstract class BeneficiaryAdapterAbstract implements BeneficiaryAdapterInterface
     public function getAccountNumber()
     {
         return $this -> accountNumber;
+    }
+
+    /**
+     * This is the code of the bank of the beneficiary (Maximum length: 4)
+     * @return string $bankCode
+     */
+    public function getBankCode()
+    {
+        return $this -> bankCode;
+    }
+
+    /**
+     * This is the code of the bank branch of the beneficiary (Maximum length: 4)
+     * @return string $bankBranchCode
+     */
+    public function getBankBranchCode()
+    {
+        return $this -> bankBranchCode;
     }
 
     /**
