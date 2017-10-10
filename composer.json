@@ -29,9 +29,6 @@
     ],
     "minimum-stability": "dev",
     "autoload": {
-        "classmap": [
-            "tests/TestCase.php"
-        ],
         "psr-4": {
             "Simmatrix\\ACHProcessor\\": "src"
         }
