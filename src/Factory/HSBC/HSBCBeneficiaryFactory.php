@@ -50,7 +50,7 @@ class HSBCBeneficiaryFactory
         $columns = [
             'record_type'                       => PresetStringColumnFactory::create(SELF::SECOND_PARTY_RECORD_TYPE, $label = 'record_type'),
             'second_party_id'                   => RightPaddedStringColumnFactory::create($beneficiary -> getUserID(), $length = 12, $label = 'second_party_id'),
-            'maintenance_code'                  => PresetStringColumnFactory::create(SELF::MAINTENANCE_CODE, $label = 'maintenance_code'),
+            'maintenance_code'                  => RightPaddedStringColumnFactory::create(SELF::MAINTENANCE_CODE, $length = 1, $label = 'maintenance_code'),
             'autopay_currency'                  => ConfigurableStringColumnFactory::create($config = $line -> config, $config_key = 'autopay_currency', $label = 'autopay_currency', $default_value = SELF::AUTOPAY_CURRENCY, $max_length = 3),
             'payment_amount'                    => LeftPaddedZerofillStringColumnFactory::create(number_format($beneficiary -> getPaymentAmount(), 2, '.', ''), $max_length = 16, $label = 'payment_amount'),
             'payment_method'                    => RightPaddedStringColumnFactory::create(SELF::PAYMENT_METHOD, $length = 2, $label = 'payment_method'),

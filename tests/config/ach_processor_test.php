@@ -9,9 +9,9 @@ return [
             'beneficiary_adapter' => Adapter\MyBeneficiaryAdapter::class,
 
             // [COMPULSORY] Batch Header Record
-            'first_party_account_branch' => 123,        // maximum length: 3 - ** Please define this yourself **
-            'first_party_account_serial' => 123456,     // maximum length: 6 - ** Please define this yourself **
-            'first_party_account_suffix' => 001,        // maximum length: 3 - ** Please define this yourself **
+            'first_party_account_branch' => '123',        // maximum length: 3 - ** Please define this yourself **
+            'first_party_account_serial' => '123456',     // maximum length: 6 - ** Please define this yourself **
+            'first_party_account_suffix' => '001',        // maximum length: 3 - ** Please define this yourself **
             'payment_set_number' => 'C01',              // maximum length: 3 - ** Please define this yourself **
 
             // [OPTIONAL] Batch Header Record
@@ -33,9 +33,9 @@ return [
             'beneficiary_adapter' => Adapter\MyBeneficiaryAdapter::class,
 
             // [COMPULSORY] Batch Header Record
-            'first_party_account_branch' => 123,        // maximum length: 3 - ** Please define this yourself **
-            'first_party_account_serial' => 123456,     // maximum length: 6 - ** Please define this yourself **
-            'first_party_account_suffix' => 001,        // maximum length: 3 - ** Please define this yourself **
+            'first_party_account_branch' => '123',        // maximum length: 3 - ** Please define this yourself **
+            'first_party_account_serial' => '123456',     // maximum length: 6 - ** Please define this yourself **
+            'first_party_account_suffix' => '001',        // maximum length: 3 - ** Please define this yourself **
             'payment_set_number' => 'C01',              // maximum length: 3 - ** Please define this yourself **
 
             // [OPTIONAL] Batch Header Record

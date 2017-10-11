@@ -25,7 +25,7 @@ class HSBCBatchHeader extends \Simmatrix\ACHProcessor\Line\Header implements Str
     const PAYMENT_TYPE = 'APO'; // Auto Pay Out, means debit 1st party, credit 2nd party
     const PAYMENT_SET_MAINTENANCE_MODE = ''; // to be left blank, indicating no checking would be done
     const HEXAGON_CUSTOMER_ID = ''; // For EBS Payment
-    const HEXAGON_ACCOUNT_ID = '';
+    const HEXAGON_ACCOUNT_ID = ''; // For EBS Payment
     const RESERVED = '';
     const AUTOPLAN_TYPE = 1;
 
@@ -49,9 +49,9 @@ class HSBCBatchHeader extends \Simmatrix\ACHProcessor\Line\Header implements Str
             'next_payment_date'                 => PresetStringColumnFactory::create(date('Ymd'), $label = 'next_payment_date'),
             'payment_type'                      => ConfigurableStringColumnFactory::create($config = $this -> config, $config_key = 'payment_type', $label = 'payment_type', $default_value = SELF::PAYMENT_TYPE, $max_length = 3),
             'payment_description'               => RightPaddedStringColumnFactory::create($this -> getPaymentDescription(), $length = 24, $label = 'payment_description'),
-            'payment_set_maintenance_mode'      => PresetStringColumnFactory::create(SELF::PAYMENT_SET_MAINTENANCE_MODE, $label = 'payment_set_maintenance_mode'),
+            'payment_set_maintenance_mode'      => RightPaddedStringColumnFactory::create(SELF::PAYMENT_SET_MAINTENANCE_MODE, $length = 1, $label = 'payment_set_maintenance_mode'),
             'hexagon_customer_id'               => ConfigurableStringColumnFactory::create($config = $this -> config, $config_key = 'hexagon_customer_id', $label = 'hexagon_customer_id', $default_value = SELF::HEXAGON_CUSTOMER_ID, $max_length = 12),
-            'hexagon_account_id'                => ConfigurableStringColumnFactory::create($config = $this -> config, $config_key = 'hexagon_account_id', $label = 'hexagon_customer_id', $default_value = SELF::HEXAGON_CUSTOMER_ID, $max_length = 12),
+            'hexagon_account_id'                => ConfigurableStringColumnFactory::create($config = $this -> config, $config_key = 'hexagon_account_id', $label = 'hexagon_customer_id', $default_value = SELF::HEXAGON_ACCOUNT_ID, $max_length = 4),
             'reserved'                          => RightPaddedStringColumnFactory::create(SELF::RESERVED, $length = 37, $label = 'reserved'),
             'autoplan_type'                     => PresetStringColumnFactory::create(SELF::AUTOPLAN_TYPE, $label = 'autoplan_type'),
         ];
