@@ -14,7 +14,7 @@ class MyBeneficiaryAdapter extends BeneficiaryAdapterAbstract implements Benefic
     public function __construct($model)
     {
         $this -> model = $model;
-        $this -> userId = $model -> testUser -> id;
+        $this -> userID = $model -> testUser -> id;
         $this -> paymentAmount = $model -> amount;
         $this -> accountNumber = $model -> testUser -> accountNumber;
         $this -> bankCode = $model -> testUser -> bank_code;
