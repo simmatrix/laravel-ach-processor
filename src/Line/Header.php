@@ -29,7 +29,7 @@ abstract class Header extends Line implements Stringable
      * @param String The key to read the config from
      * @param String The payment description
      */
-    public function __construct( array $beneficiaries, string $config_key, string $payment_description )
+    public function __construct( array $beneficiaries, string $config_key, string $payment_description = '' )
     {
         $this -> beneficiaries = $beneficiaries;
         $this -> paymentDescription = $payment_description;

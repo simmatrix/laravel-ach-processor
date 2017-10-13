@@ -13,7 +13,6 @@ abstract class BeneficiaryAdapterAbstract implements BeneficiaryAdapterInterface
     protected $bankCode;
     protected $bankBranchCode;
     protected $payeeName;
-    protected $secondPartyReference;
 
     /**
      * @param model
@@ -73,14 +72,5 @@ abstract class BeneficiaryAdapterAbstract implements BeneficiaryAdapterInterface
     public function getPayeeName()
     {
         return $this -> payeeName;
-    }
-
-    /**
-     * This can either be the IC number or the company registration number (Maximum length: 12)
-     * @return string
-     */
-    public function getSecondPartyReference()
-    {
-        return $this -> secondPartyReference;
     }
 }

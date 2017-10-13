@@ -19,7 +19,7 @@ class UobAchUploadProcessorFactory
      * @param Int The sequence number for file name generation. If multiple files are generated in a day, this number should be incremented. Can go up till 99 per day
      * @return ACHUploadProcessor
      */
-    public static function create($beneficiaries, $config_key, $sequence_number = 1)
+    public static function create($beneficiaries, $config_key, $payment_description = '', $sequence_number = 1)
     {
         $config = new Repository(config($config_key));
         $adapter_class = $config['beneficiary_adapter'];
@@ -28,8 +28,8 @@ class UobAchUploadProcessorFactory
             return new $adapter_class($payment);
         }) -> toArray();
 
-        $beneficiary_lines = collect($beneficiaries) -> map( function(BeneficiaryAdapterInterface $beneficiary) use($config_key){
-            return UOBBeneficiaryFactory::create($beneficiary, $config_key);
+        $beneficiary_lines = collect($beneficiaries) -> map( function(BeneficiaryAdapterInterface $beneficiary) use($config_key, $payment_description){
+            return UOBBeneficiaryFactory::create($beneficiary, $config_key, $payment_description);
         }) -> toArray();
 
         $ach = new ACHUploadProcessor($beneficiaries);
@@ -47,7 +47,7 @@ class UobAchUploadProcessorFactory
         $ach -> setBatchHeader($batch_header);
         $ach -> setBatchTrailer($batch_trailer);
         $ach -> setBeneficiaryLines($beneficiary_lines);
-        $ach -> setIdentifier($batch_trailer -> getHashTotalAlgorithm());
+        $ach -> setIdentifier($batch_trailer -> getCheckSum());
         return $ach;
     }
 

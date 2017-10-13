@@ -7,6 +7,7 @@ use Simmatrix\ACHProcessor\Line\Header;
 use Simmatrix\ACHProcessor\Beneficiary;
 use Simmatrix\ACHProcessor\BeneficiaryLine;
 use Simmatrix\ACHProcessor\Column\Date;
+use Simmatrix\ACHProcessor\Column\Column;
 use Simmatrix\ACHProcessor\Factory\Column\ConfigurableStringColumnFactory;
 use Simmatrix\ACHProcessor\Factory\Column\EmptyColumnFactory;
 use Simmatrix\ACHProcessor\Factory\Column\LeftPaddedDecimalWithoutDelimiterColumnFactory;
@@ -75,12 +76,12 @@ class UOBBatchTrailer extends Header
         return $line;
     }
 
-    private function getCheckSum()
+    public function getCheckSum()
     {
         return (int) SELF::getHeaderRecordCheckSum() + SELF::getDetailRecordsCheckSum();
     }
 
-    private function getHeaderRecordCheckSum($B, $R, $A)
+    private function getHeaderRecordCheckSum()
     {
         $B = SELF::getOriginatingBankCodeArray();
         $R = SELF::getOriginatingBranchCodeArray();
@@ -101,7 +102,7 @@ class UOBBatchTrailer extends Header
         return (int) $sum1 * $sum2;
     }
 
-    private function getDetailRecordsCheckSum($)
+    private function getDetailRecordsCheckSum()
     {
         $T = SELF::getTransactionCode();
         $sum4 = 0;
@@ -111,7 +112,7 @@ class UOBBatchTrailer extends Header
             $B = str_split(RightPaddedStringColumnFactory::create($beneficiary -> getBankCode(), 4, $label = 'receiving_bank_code') -> getString());
             $R = str_split(RightPaddedStringColumnFactory::create($beneficiary -> getBankBranchCode(), 3, $label = 'receiving_branch_code') -> getString());
             $A = str_split( SELF::replaceSpacesWithZeros( RightPaddedStringColumnFactory::create($beneficiary -> getAccountNumber(), 11, $label = 'receiving_account_number') -> getString() ) );
-            $M = str_split( LeftPaddedDecimalWithoutDelimiterColumnFactory::create( $beneficiary -> getPaymentAmount(), $length = 11 , $label = 'receiving_amount') );
+            $M = str_split( LeftPaddedDecimalWithoutDelimiterColumnFactory::create( $beneficiary -> getPaymentAmount(), $length = 11 , $label = 'receiving_amount') -> getString() );
 
             $sum1 = (int) intval($B[0].$B[1]) * 1 +
                     intval($R[0].$R[1]) * 2 +

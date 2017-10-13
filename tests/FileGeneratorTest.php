@@ -23,9 +23,7 @@ class FileGeneratorTest extends Orchestra\Testbench\TestCase
             [
                 'hsbc' => [
                     'company_a' => $config['hsbc']['company_a']
-                ]
-            ],
-            [
+                ],
                 'uob' => [
                     'company_a' => $config['uob']['company_a']
                 ]
@@ -63,17 +61,18 @@ class FileGeneratorTest extends Orchestra\Testbench\TestCase
 
     public function testHSBCDownload()
     {
+        echo "\r\n\r\n";
+
         // Create an array of BeneficiaryAdapterInterface
         $beneficiaries = TestPayment::all();
         $ach = HsbcAchUploadProcessorFactory::create($beneficiaries, 'ach_processor.hsbc.company_a', 'CashoutOct17');
         echo $ach -> getString();
     }
 
-    /**
-     * @TODO
-     */
-    public function xtestUOBDownload()
+    public function testUOBDownload()
     {
+        echo "\r\n\r\n";
+
         // Create an array of BeneficiaryAdapterInterface
         $beneficiaries = TestPayment::all();
 
@@ -84,9 +83,11 @@ class FileGeneratorTest extends Orchestra\Testbench\TestCase
         $i = 0;
         foreach(explode("\r\n", $string) as $line){
             if($i++ >= 1){
-                $this -> assertEquals(900, strlen($line));
+                $this -> assertEquals(80, strlen($line));
             }
         }
+
+        echo $string;
     }
 
     /**

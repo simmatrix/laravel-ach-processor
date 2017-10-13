@@ -59,11 +59,49 @@ return [
 
             'beneficiary_adapter' => Adapter\MyBeneficiaryAdapter::class,
 
+            // [COMPULSORY] Batch Header
+
+            'service_type' => 'IBGINORM',                   // Maximum length: 10. 'IBGINORM' is normal service. Another option is 'IBGIEXP' which is express service, of which all receiving accounts must belong to UOB
+            'originating_bank_code' => '7828',              // Maximum length: 4
+            'originating_branch_code' => '020',             // Maximum length: 3
+            'originating_account_number' => '3413012765',   // Maximum length: 11
+            'originating_account_name' => 'LOREM IPSUM',    // Maximum length: 20 - CAPITAL LETTER ONLY
+            'effective_working_days' => '1',                // Maximum length: 1 - How many working days later (after generating this ACH file) that the amount of money get passed to the beneficiary / collected from debtor)
+
+            // [OPTIONAL] Batch Detail
+
+            // For Payroll      : use '22' (Salary Credit)
+            // For Collection   : use '30' (Direct Debit)
+            // For Payments     : use '20' (Miscellaneous Credit), '23' (Dividend Credit), '24' (Remittance Credit), '25' (Bill Credit)
+            'transaction_code' => '20',
+
+            // Only fill this up if your set '30' as your transaction code (If you are doing debt collection)
+            'reference' => '',
+
         ],
 
         'company_b' => [
 
             'beneficiary_adapter' => Adapter\MyBeneficiaryAdapter::class,
+
+            // [COMPULSORY] Batch Header
+
+            'service_type' => 'IBGINORM',                   // Maximum length: 10. 'IBGINORM' is normal service. Another option is 'IBGIEXP' which is express service, of which all receiving accounts must belong to UOB
+            'originating_bank_code' => '7828',              // Maximum length: 4
+            'originating_branch_code' => '020',             // Maximum length: 3
+            'originating_account_number' => '3413012765',   // Maximum length: 11
+            'originating_account_name' => 'LOREM IPSUM',    // Maximum length: 20 - CAPITAL LETTER ONLY
+            'effective_working_days' => '1',                // Maximum length: 1 - How many working days later (after generating this ACH file) that the amount of money get passed to the beneficiary / collected from debtor)
+
+            // [OPTIONAL] Batch Detail
+
+            // For Payroll      : use '22' (Salary Credit)
+            // For Collection   : use '30' (Direct Debit)
+            // For Payments     : use '20' (Miscellaneous Credit), '23' (Dividend Credit), '24' (Remittance Credit), '25' (Bill Credit)
+            'transaction_code' => '20',
+
+            // Only fill this up if your set '30' as your transaction code (If you are doing debt collection)
+            'reference' => '',
 
         ],
 
