@@ -62,7 +62,7 @@ class UOBBeneficiaryFactory
             'record_type'                 => PresetStringColumnFactory::create(SELF::RECORD_TYPE, $label = 'record_type'),
             'receiving_bank_code'         => LeftPaddedZerofillStringColumnFactory::create( $beneficiary -> getBankCode(), $length = 4, $label = 'receiving_bank_code' ),
             'receiving_branch_code'       => LeftPaddedZerofillStringColumnFactory::create( $beneficiary -> getBankBranchCode(), $length = 3, $label = 'receiving_branch_code' ),
-            'receiving_account_number'    => RightPaddedStringColumnFactory::create( $beneficiary -> getAccountNumber(), $length = 11, $label = 'receiving_account_number' ),
+            'receiving_account_number'    => RightPaddedStringColumnFactory::create( SELF::removeSpecialCharacters($beneficiary -> getAccountNumber()), $length = 11, $label = 'receiving_account_number' ),
             'receiving_account_name'      => RightPaddedStringColumnFactory::create( $beneficiary -> getPayeeName(), $length = 20, $label = 'receiving_account_name' ),
             'transaction_code'            => ConfigurableStringColumnFactory::create($config = $line -> config, $config_key = 'transaction_code', $label = 'transaction_code', $default_value = SELF::TRANSACTION_CODE_MISC_CREDIT, $max_length = 2),
             'amount'                      => LeftPaddedDecimalWithoutDelimiterColumnFactory::create( $beneficiary -> getPaymentAmount(), $fixed_length = 11 , $label = 'amount'),
@@ -72,6 +72,12 @@ class UOBBeneficiaryFactory
         ];
         $line -> setColumns($columns);
         return $line;
+    }
+
+    private function removeSpecialCharacters($value)
+    {
+        $value = str_replace(' ', '-', $value);
+        return preg_replace('/[^A-Za-z0-9]/', '', $value);
     }
 
 }
