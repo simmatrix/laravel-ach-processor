@@ -21,7 +21,7 @@ class ConfigurableStringColumnFactory
      * @param Boolean   $auto_trim      An optional flag to determine whether to trim off extra characters should it has exceeded the maximum allowable length
      * @return Column
      */
-    public static function create($config, $config_key, $label = '', $default_value = '', $max_length = NULL, $auto_trim = TRUE)
+    public static function create($config, $config_key, $label = '', $default_value = '', $max_length = NULL, $auto_trim = TRUE, $padding_type = Column::PADDING_RIGHT)
     {
         if( !$config -> has($config_key)){
             throw new ACHProcessorColumnException('Could not find the config option ' . $config_key);
@@ -36,7 +36,7 @@ class ConfigurableStringColumnFactory
         $column -> setFixedLength($max_length);
         $column -> setAutoTrim($auto_trim);
         $column -> setDefaultValue($default_value);
-        $column -> setPaddingType(Column::PADDING_RIGHT);
+        $column -> setPaddingType($padding_type);
         return $column;
     }
 }

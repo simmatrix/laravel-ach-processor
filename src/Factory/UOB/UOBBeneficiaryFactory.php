@@ -16,6 +16,15 @@ use Simmatrix\ACHProcessor\Factory\Column\VariableLengthStringColumnFactory;
 
 class UOBBeneficiaryFactory
 {
+    const RECORD_TYPE = '2';
+
+    const TRANSACTION_CODE_MISC_CREDIT = '20';
+    const TRANSACTION_CODE_SALARY_CREDIT = '22';
+    const TRANSACTION_CODE_DIVIDEND_CREDIT = '23';
+    const TRANSACTION_CODE_REMITTANCE_CREDIT = '24';
+    const TRANSACTION_CODE_BILL_CREDIT = '25';
+    const TRANSACTION_CODE_DIRECT_DEBIT = '30';
+
     /**
      * @var an Eloquent Model
      */
@@ -25,9 +34,10 @@ class UOBBeneficiaryFactory
      * @param String the key to read the configuration from
      * @return BeneficiaryLine
      */
-    public static function create($beneficiary, $config_key){
+    public static function create($beneficiary, $config_key, $file_reference)
+    {
         $beneficiary_lines = new BeneficiaryLine($beneficiary);
-        $beneficiary_lines -> addLine(static::cashiersOrderFormatPaymentInstructionLine($beneficiary, $config_key));
+        $beneficiary_lines -> setLine(static::getLine($beneficiary, $config_key, $file_reference));
         return $beneficiary_lines;
     }
 
@@ -35,7 +45,8 @@ class UOBBeneficiaryFactory
      * @param BeneficiaryAdapterInterface
      * @param String The key to read the config from
      */
-    public static function cashiersOrderFormatPaymentInstructionLine(BeneficiaryAdapterInterface $beneficiary, $config_key){
+    public static function getLine(BeneficiaryAdapterInterface $beneficiary, $config_key, $file_reference)
+    {
         $line = new Line($config_key);
         $line -> setColumnDelimiter("");
 
@@ -43,9 +54,40 @@ class UOBBeneficiaryFactory
         $date_column -> setDate(static::getNextWorkingDay());
         $date_column -> setFormat('Ymd');
 
-        $settlement_ac_no = ConfigurableStringColumnFactory::create($config = $line -> config, 'settlement_ac_no') -> getString();
+        $transaction_code = ConfigurableStringColumnFactory::create($config = $this -> config, $config_key = 'transaction_code', $label = 'transaction_code', $default_value = SELF::TRANSACTION_CODE_MISC_CREDIT, $max_length = 2);
+        $total_debit_amount = LeftPaddedDecimalWithoutDelimiterColumnFactory::create(SELF::DEFAULT_ZERO, $length = 13, $label = 'total_debit_amount');
+        $total_credit_amount = LeftPaddedDecimalWithoutDelimiterColumnFactory::create(SELF::DEFAULT_ZERO, $length = 13, $label = 'total_credit_amount');
+        $total_debit_count = LeftPaddedZerofillStringColumnFactory::create(SELF::DEFAULT_ZERO, $length = 7, $label = 'total_debit_count');
+        $total_credit_count = LeftPaddedZerofillStringColumnFactory::create(SELF::DEFAULT_ZERO, $length = 7, $label = 'total_credit_count');
+
+        switch( $transaction_code -> getString() ) {
+            case SELF::TRANSACTION_CODE_DIRECT_DEBIT:
+                $total_debit_amount = LeftPaddedDecimalWithoutDelimiterColumnFactory::create( $this -> getTotalPaymentAmount(), $length = 13 , $label = 'total_debit_amount');
+                $total_debit_count = LeftPaddedZerofillStringColumnFactory::create( $this -> getBeneficiaryCount(), $length = 7, $label = 'total_debit_count');
+                break;
+            case SELF::TRANSACTION_CODE_MISC_CREDIT:
+            case SELF::TRANSACTION_CODE_SALARY_CREDIT:
+            case SELF::TRANSACTION_CODE_DIVIDEND_CREDIT:
+            case SELF::TRANSACTION_CODE_REMITTANCE_CREDIT:
+            case SELF::TRANSACTION_CODE_BILL_CREDIT:
+                $total_credit_amount = LeftPaddedDecimalWithoutDelimiterColumnFactory::create( $this -> getTotalPaymentAmount(), $length = 13 , $label = 'total_credit_amount');
+                $total_credit_count = LeftPaddedZerofillStringColumnFactory::create( $this -> getBeneficiaryCount(), $length = 7, $label = 'total_credit_count');
+                break;
+            default:
+        }
 
         $columns = [
+            'record_type'                         => PresetStringColumnFactory::create(SELF::RECORD_TYPE, $label = 'record_type'),
+            'receiving_bank_code'                 => LeftPaddedZerofillStringColumnFactory::create( $beneficiary -> getBankCode(), $length = 4, $label = 'receiving_bank_code' ),
+            'receiving_branch_code'               => LeftPaddedZerofillStringColumnFactory::create( $beneficiary -> getBankBranchCode(), $length = 3, $label = 'receiving_branch_code' ),
+            'receiving_account_number'            => RightPaddedStringColumnFactory::create( $beneficiary -> getAccountNumber(), $length = 11, $label = 'receiving_account_number' ),
+            'receiving_account_name'              => RightPaddedStringColumnFactory::create( $beneficiary -> getPayeeName(), $length = 20, $label = 'receiving_account_name' ),
+            'transaction_code'                    => ConfigurableStringColumnFactory::create($config = $this -> config, $config_key = 'transaction_code', $label = 'transaction_code', $default_value = SELF::TRANSACTION_CODE_MISC_CREDIT, $max_length = 2),
+            'amount'                              => LeftPaddedDecimalWithoutDelimiterColumnFactory::create( $beneficiary -> getPaymentAmount(), $fixed_length = 11 , $label = 'amount'),
+            // 'particulars'                         =>
+            // 'reference'                           => RightPaddedStringColumnFactory::create($file_reference, $length = 12, $label = 'second_party_reference'),
+
+
             'record_type'                       => PresetStringColumnFactory::create('2', $label = 'record_type'),
             'payment_type'                      => PresetStringColumnFactory::create('CHQ', $label = 'payment_type'),
             'payment_currency'                  => ConfigurableStringColumnFactory::create($config = $line -> config, 'payment_currency', $label = 'payment_currency'),
