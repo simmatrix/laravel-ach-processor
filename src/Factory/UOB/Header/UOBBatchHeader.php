@@ -55,7 +55,7 @@ class UOBBatchHeader extends Header
      */
     private function getValueDate()
     {
-        $effective_working_days = intval(ConfigurableStringColumnFactory::create($config = $this -> config, $config_key = 'effective_working_days', $label = 'effective_working_days', 1, $max_length = 2, $auto_trim = TRUE, $padding_type = Column::PADDING_ZEROFILL_LEFT) -> getString());
+        $effective_working_days = intval(ConfigurableStringColumnFactory::create($config = $this -> config, $config_key = 'effective_working_days', $label = 'effective_working_days', 1, $max_length = 2) -> getString());
 
         $invalid_day = array('sat','sun');
 
