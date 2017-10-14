@@ -40,44 +40,13 @@ class UOBBatchHeader extends Header
             'originating_account_number'    => ConfigurableStringColumnFactory::create($config = $this -> config, $config_key = 'originating_account_number', $label = 'originating_account_number', $default_value = SELF::DEFAULT_ZERO, $max_length = 11, $auto_trim = TRUE, $padding_type = Column::PADDING_ZEROFILL_LEFT),
             'originating_account_name'      => ConfigurableStringColumnFactory::create($config = $this -> config, $config_key = 'originating_account_name', $label = 'originating_account_name', $default_value = SELF::BLANK_SPACE, $max_length = 20),
             'creation_date'                 => RightPaddedStringColumnFactory::create( date('Ymd'), 8, $label = 'creation_date'),
-            'value_date'                    => RightPaddedStringColumnFactory::create( SELF::getValueDate(), 8, $label = 'value_date'),
+            'value_date'                    => RightPaddedStringColumnFactory::create( $this -> getEffectivePaymentDate(), 8, $label = 'value_date'),
             'filler_1'                      => RightPaddedStringColumnFactory::create(SELF::BLANK_SPACE, 5, $label = 'filler_1'),
             'hash_indicator'                => PresetStringColumnFactory::create(self::HAS_INDICATOR, $label = 'hash_indicator'),
             'filler_2'                      => RightPaddedStringColumnFactory::create(SELF::BLANK_SPACE, 9, $label = 'filler_2'),
         ];
         $line -> setColumns($columns);
         return $line;
-    }
-
-    /**
-     * Return the next working day that is in the future.
-     * @return Datetime
-     */
-    private function getValueDate()
-    {
-        $effective_working_days = intval(ConfigurableStringColumnFactory::create($config = $this -> config, $config_key = 'effective_working_days', $label = 'effective_working_days', 1, $max_length = 2) -> getString());
-
-        $invalid_day = array('sat','sun');
-
-        $targeted_unix = mktime(0, 0, 0, date("m"), date("d")+$effective_working_days, date("y"));
-        $targeted_day = strtolower(date('D',$targeted_unix));
-
-        $datetime = new \DateTime();
-        if(!in_array($targeted_day,$invalid_day)){
-           $datetime -> setTimestamp($targeted_unix);
-           return $datetime -> format('Ymd');
-        }else{
-           switch($targeted_day){
-               case 'sat':
-                   $targeted_unix = mktime(0, 0, 0, date("m"), date("d")+$effective_working_days+2, date("y"));
-                   break;
-               case 'sun':
-                   $targeted_unix = mktime(0, 0, 0, date("m"), date("d")+$effective_working_days+1, date("y"));
-                   break;
-           }
-           $datetime -> setTimestamp($targeted_unix);
-           return $datetime -> format('Ymd');
-        }
     }
 
 }

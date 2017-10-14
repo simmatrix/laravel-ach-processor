@@ -9,10 +9,11 @@ return [
             'beneficiary_adapter' => Adapter\MyBeneficiaryAdapter::class,
 
             // [COMPULSORY] Batch Header Record
-            'first_party_account_branch' => '123',        // maximum length: 3 - ** Please define this yourself **
-            'first_party_account_serial' => '123456',     // maximum length: 6 - ** Please define this yourself **
-            'first_party_account_suffix' => '001',        // maximum length: 3 - ** Please define this yourself **
-            'payment_set_number' => 'C01',              // maximum length: 3 - ** Please define this yourself **
+            'first_party_account_branch' => '123',       // maximum length: 3 - ** Please define this yourself **
+            'first_party_account_serial' => '123456',    // maximum length: 6 - ** Please define this yourself **
+            'first_party_account_suffix' => '001',       // maximum length: 3 - ** Please define this yourself **
+            'payment_set_number' => 'C01',               // maximum length: 3 - ** Please define this yourself **
+            'effective_working_days' => '1',             // maximum length: 2 - how many days would it take for the amount to be debited from the first party, after the generation of this ACH file
 
             // [OPTIONAL] Batch Header Record
             'country_code' => 'MY',                     // maximum length: 2
@@ -33,10 +34,11 @@ return [
             'beneficiary_adapter' => Adapter\MyBeneficiaryAdapter::class,
 
             // [COMPULSORY] Batch Header Record
-            'first_party_account_branch' => '123',        // maximum length: 3 - ** Please define this yourself **
-            'first_party_account_serial' => '123456',     // maximum length: 6 - ** Please define this yourself **
-            'first_party_account_suffix' => '001',        // maximum length: 3 - ** Please define this yourself **
-            'payment_set_number' => 'C01',              // maximum length: 3 - ** Please define this yourself **
+            'first_party_account_branch' => '123',       // maximum length: 3 - ** Please define this yourself **
+            'first_party_account_serial' => '123456',    // maximum length: 6 - ** Please define this yourself **
+            'first_party_account_suffix' => '001',       // maximum length: 3 - ** Please define this yourself **
+            'payment_set_number' => 'C01',               // maximum length: 3 - ** Please define this yourself **
+            'effective_working_days' => '1',             // maximum length: 2 - how many days would it take for the amount to be debited from the first party, after the generation of this ACH file
 
             // [OPTIONAL] Batch Header Record
             'country_code' => 'MY',                     // maximum length: 2
