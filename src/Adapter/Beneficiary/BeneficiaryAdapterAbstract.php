@@ -7,12 +7,18 @@ abstract class BeneficiaryAdapterAbstract implements BeneficiaryAdapterInterface
 {
     protected $model;
 
+    // HUB MRI File + UOB
     protected $userID;
     protected $paymentAmount;
     protected $accountNumber;
     protected $bankCode;
     protected $bankBranchCode;
     protected $payeeName;
+
+    // HSBC iFile
+    protected $title;
+    protected $email;
+    protected $payeeIdentificationNumber;
 
     /**
      * @param model
@@ -72,5 +78,70 @@ abstract class BeneficiaryAdapterAbstract implements BeneficiaryAdapterInterface
     public function getPayeeName()
     {
         return $this -> payeeName;
+    }
+
+    /**
+     * [Advising Record] Recipient Title Flag
+     * @return string $title
+     */
+    public function getTitle()
+    {
+        return $this -> title;
+    }
+
+    /**
+     * [Advising Record] Email Address
+     * @return string $email
+     */
+    public function getEmail()
+    {
+        return $this -> email;
+    }
+
+    /**
+     * [Second Party Details] Second party Identifier (For Malaysian it would be NRIC number)
+     * @return string $payeeIdentificationNumber
+     */
+    public function getPayeeIdentificationNumber()
+    {
+        return $this -> payeeIdentificationNumber;
+    }
+
+    /**
+     * For HSBC
+     * "M" - Mr
+     * "R" - Mrs
+     * "S" - Ms
+     * "O" - Other
+     * @return String
+     */
+    public function getRecipientTitleFlag()
+    {
+        switch( strtolower($this -> sanitizeString($this -> title))){
+            case "mr":
+                return "M";
+            case "mrs":
+                return "R";
+            case "ms":
+                return "S";
+            default:
+                return "O";
+        }
+    }
+
+    /**
+     * A description for title flag, if the value was O. Example : Dato / Datin / Tan Sri
+     * @return String
+     */
+    public function getRecipientTitleDescription()
+    {
+        if ( $this -> getRecipientTitleFlag() != "O" ) return "";
+        return $this -> title;
+    }
+
+    public function sanitizeString( $text )
+    {
+        $text = str_replace(' ', '', $text);
+        return preg_replace('/[^A-Za-z]/', '', $text);
     }
 }

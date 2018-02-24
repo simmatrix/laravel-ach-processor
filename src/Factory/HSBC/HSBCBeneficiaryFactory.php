@@ -33,17 +33,17 @@ class HSBCBeneficiaryFactory
      * @param String The key to read the config from
      * @return BeneficiaryLine
      */
-    public static function create(BeneficiaryAdapterInterface $beneficiary, $config_key, $file_reference)
+    public static function create(BeneficiaryAdapterInterface $beneficiary, $config_key, $payment_description)
     {
         $beneficiary_line = new BeneficiaryLine($beneficiary);
-        $beneficiary_line -> setLine(static::getLine($beneficiary, $config_key, $file_reference));
+        $beneficiary_line -> setLine(static::getLine($beneficiary, $config_key, $payment_description));
         return $beneficiary_line;
     }
 
     /**
      * @param BeneficiaryAdapterInterface
      * @param String The key to read the config from     */
-    public static function getLine(BeneficiaryAdapterInterface $beneficiary, $config_key, $file_reference)
+    public static function getLine(BeneficiaryAdapterInterface $beneficiary, $config_key, $payment_description)
     {
         $line = new Line($config_key);
 
@@ -61,7 +61,7 @@ class HSBCBeneficiaryFactory
             'second_party_account_number'       => RightPaddedStringColumnFactory::create($beneficiary -> getAccountNumber(), $length = 20, $label = 'second_party_account_number'),
             'next_payment_date'                 => RightPaddedStringColumnFactory::create(SELF::NEXT_PAYMENT_DATE, $length = 8, $label = 'next_payment_date'),
             'second_party_description'          => RightPaddedStringColumnFactory::create($beneficiary -> getPayeeName(), $length = 20, $label = 'second_party_description'),
-            'second_party_reference'            => RightPaddedStringColumnFactory::create($file_reference, $length = 12, $label = 'second_party_reference'),
+            'second_party_reference'            => RightPaddedStringColumnFactory::create($payment_description, $length = 12, $label = 'second_party_reference'),
             'reserved'                          => RightPaddedStringColumnFactory::create(SELF::RESERVED, $length = 26, $label = 'reserved'),
         ];
 

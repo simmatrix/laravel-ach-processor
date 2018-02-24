@@ -15,6 +15,8 @@ class CreateTestUsers extends Migration
         Schema::create('test_users', function (Blueprint $table) {
             $table -> increments('id');
             $table -> string('fullname');
+            $table -> string('title');
+            $table -> string('email');
             $table -> string('account_number');
             $table -> string('bank_code');
             $table -> string('bank_branch_code');

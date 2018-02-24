@@ -2,11 +2,13 @@
 
 return [
 
-    'hsbc' => [
+    'hsbc_mri' => [
 
         'company_a' => [
 
             'beneficiary_adapter' => Adapter\MyBeneficiaryAdapter::class,
+
+            'file_reference_prefix' => 'BP',
 
             // [COMPULSORY] Batch Header Record
             'first_party_account_branch' => '123',       // maximum length: 3 - ** Please define this yourself **
@@ -33,6 +35,8 @@ return [
 
             'beneficiary_adapter' => Adapter\MyBeneficiaryAdapter::class,
 
+            'file_reference_prefix' => 'BP',
+            
             // [COMPULSORY] Batch Header Record
             'first_party_account_branch' => '123',       // maximum length: 3 - ** Please define this yourself **
             'first_party_account_serial' => '123456',    // maximum length: 6 - ** Please define this yourself **
@@ -50,6 +54,68 @@ return [
             // Data Record
             'autopay_currency' => 'MYR',                // maximum length: 3
             'payment_currency' => 'MYR',                // maximum length: 3
+
+        ],
+
+    ],
+
+    'hsbc_ifile' => [
+
+        'company_a' => [
+
+            'beneficiary_adapter' => Adapter\MyBeneficiaryAdapter::class,
+
+            'effective_working_days'                => '1',         // maximum length: 2 - how many days would it take for the amount to be debited from the first party, after the generation of this ACH file
+
+            // File  Header
+            'hexagon_abc_customer_id'               => 'ABC12345678',           // To be provided by HSBC
+            'hsbcnet_id'                            => 'MYHBMBGMY123456789',    // To be provided by HSBC
+            'file_reference_prefix'                 => 'IFILEPYT_',
+            'authorization_type'                    => 'P',         // A: Preauthorized, P: Instruction level authorization, F: File level authorization (summary), V: File level authorization (detail)
+
+            // Batch Header
+            'instruction_type'                      => 'ACH-CR',    // ACH-CR: Payment, ACH-DR: Collection of Debts
+            'first_party_account'                   => '123456789012',
+            'first_party_account_country_code'      => 'MY',
+            'first_party_account_institution_code'  => 'HBMB',
+            'first_party_account_currency'          => 'MYR',
+            'transaction_currency'                  => 'MYR',
+            'payment_set_number'                    => 'C01',      
+
+            // Advising Record
+            'email_channel_select_flag'             => 'Y',         // "Y" - yes, or leave blank
+            'email_format'                          => '1',         // 1 - PDF, 2 - CSV. Mandatory if email_channel_select_flag is "Y"
+            'domicile_of_email_recipient'           => 'MY'
+
+        ],
+
+        // If you have a subsidiary company, you can copy the structure of the key above
+
+        'company_b' => [
+
+            'beneficiary_adapter' => Adapter\MyBeneficiaryAdapter::class,
+
+            'effective_working_days'                => '1',         // maximum length: 2 - how many days would it take for the amount to be debited from the first party, after the generation of this ACH file
+
+            // File  Header
+            'hexagon_abc_customer_id'               => 'ABC12345678',           // To be provided by HSBC
+            'hsbcnet_id'                            => 'MYHBMBGMY123456789',    // To be provided by HSBC
+            'file_reference_prefix'                 => 'IFILEPYT_',
+            'authorization_type'                    => 'P',         // A: Preauthorized, P: Instruction level authorization, F: File level authorization (summary), V: File level authorization (detail)
+
+            // Batch Header
+            'instruction_type'                      => 'ACH-CR',    // ACH-CR: Payment, ACH-DR: Collection of Debts
+            'first_party_account'                   => '123456789012',
+            'first_party_account_country_code'      => 'MY',
+            'first_party_account_institution_code'  => 'HBMB',
+            'first_party_account_currency'          => 'MYR',
+            'transaction_currency'                  => 'MYR',
+            'payment_set_number'                    => 'C01',      
+
+            // Advising Record
+            'email_channel_select_flag'             => 'Y',         // "Y" - yes, or leave blank
+            'email_format'                          => '1',         // 1 - PDF, 2 - CSV. Mandatory if email_channel_select_flag is "Y"
+            'domicile_of_email_recipient'           => 'MY'
 
         ],
 

@@ -3,6 +3,7 @@
 namespace Simmatrix\ACHProcessor\Factory\UOB\Header;
 
 use Simmatrix\ACHProcessor\Line\Line;
+use Simmatrix\ACHProcessor\Services\CoreHelper;
 use Simmatrix\ACHProcessor\Line\Header;
 use Simmatrix\ACHProcessor\Beneficiary;
 use Simmatrix\ACHProcessor\BeneficiaryLine;
@@ -30,6 +31,7 @@ class UOBBatchHeader extends Header
      * @return Line
      */
     public function getLine(){
+        $helper = new CoreHelper( $this -> configKey );
         $line = new Line();
         $line -> setColumnDelimiter("");
         $columns = [
@@ -40,7 +42,7 @@ class UOBBatchHeader extends Header
             'originating_account_number'    => ConfigurableStringColumnFactory::create($config = $this -> config, $config_key = 'originating_account_number', $label = 'originating_account_number', $default_value = SELF::DEFAULT_ZERO, $max_length = 11, $auto_trim = TRUE, $padding_type = Column::PADDING_ZEROFILL_LEFT),
             'originating_account_name'      => ConfigurableStringColumnFactory::create($config = $this -> config, $config_key = 'originating_account_name', $label = 'originating_account_name', $default_value = SELF::BLANK_SPACE, $max_length = 20),
             'creation_date'                 => RightPaddedStringColumnFactory::create( date('Ymd'), 8, $label = 'creation_date'),
-            'value_date'                    => RightPaddedStringColumnFactory::create( $this -> getEffectivePaymentDate(), 8, $label = 'value_date'),
+            'value_date'                    => RightPaddedStringColumnFactory::create( $helper -> getEffectivePaymentDate(), 8, $label = 'value_date'),
             'filler_1'                      => RightPaddedStringColumnFactory::create(SELF::BLANK_SPACE, 5, $label = 'filler_1'),
             'hash_indicator'                => PresetStringColumnFactory::create(self::HAS_INDICATOR, $label = 'hash_indicator'),
             'filler_2'                      => RightPaddedStringColumnFactory::create(SELF::BLANK_SPACE, 9, $label = 'filler_2'),

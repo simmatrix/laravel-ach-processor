@@ -39,4 +39,22 @@ interface BeneficiaryAdapterInterface
      * @return string
      */
     public function getPayeeName();
+
+    /**
+     * [Advising Record] Recipient Title Flag (Maximum length: 1)
+     * @return string
+     */
+    public function getTitle();
+
+    /**
+     * [Advising Record] Email Address (Maximum length: 70)
+     * @return string
+     */
+    public function getEmail();
+
+    /**
+     * [Second Party Details] Second party Identifier (For Malaysian it would be NRIC number) (Maximum length: 12)
+     * @return string
+     */
+    public function getPayeeIdentificationNumber();
 }

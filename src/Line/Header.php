@@ -10,6 +10,12 @@ use Simmatrix\ACHProcessor\Factory\Column\ConfigurableStringColumnFactory;
 abstract class Header extends Line implements Stringable
 {
     /**
+     * To be displayed if user doesn't specify the value in the configuration file ( config/ach_processor.php )
+     * @var string
+     */
+    const DEFAULT_MISSING_VALUE = '[MISSING]';
+
+    /**
      * @var Array of BeneficiaryAdapterInterface
      */
     protected $beneficiaries;
@@ -91,36 +97,5 @@ abstract class Header extends Line implements Stringable
         return (float)collect($this -> beneficiaries) -> reduce( function($carry,  BeneficiaryAdapterInterface $beneficiary){
             return $carry += $beneficiary -> getPaymentAmount();
         }, 0);
-    }
-
-    /**
-     * Return the next working day that is in the future.
-     * @return Datetime
-     */
-    public function getEffectivePaymentDate()
-    {
-        $effective_working_days = intval(ConfigurableStringColumnFactory::create($config = $this -> config, $config_key = 'effective_working_days', $label = 'effective_working_days', 1, $max_length = 2) -> getString());
-
-        $invalid_day = array('sat','sun');
-
-        $targeted_unix = mktime(0, 0, 0, date("m"), date("d")+$effective_working_days, date("y"));
-        $targeted_day = strtolower(date('D',$targeted_unix));
-
-        $datetime = new \DateTime();
-        if(!in_array($targeted_day,$invalid_day)){
-           $datetime -> setTimestamp($targeted_unix);
-           return $datetime -> format('Ymd');
-        }else{
-           switch($targeted_day){
-               case 'sat':
-                   $targeted_unix = mktime(0, 0, 0, date("m"), date("d")+$effective_working_days+2, date("y"));
-                   break;
-               case 'sun':
-                   $targeted_unix = mktime(0, 0, 0, date("m"), date("d")+$effective_working_days+1, date("y"));
-                   break;
-           }
-           $datetime -> setTimestamp($targeted_unix);
-           return $datetime -> format('Ymd');
-        }
     }
 }

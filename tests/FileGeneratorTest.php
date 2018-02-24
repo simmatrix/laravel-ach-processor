@@ -6,6 +6,7 @@ use Models\TestPayment;
 use Adapter\MyBeneficiaryAdapter;
 
 use Simmatrix\ACHProcessor\Factory\HSBC\HsbcAchUploadProcessorFactory;
+use Simmatrix\ACHProcessor\Factory\HSBC\HsbcAchIFileUploadProcessorFactory;
 use Simmatrix\ACHProcessor\Factory\UOB\UobAchUploadProcessorFactory;
 
 use Simmatrix\ACHProcessor\Adapter\Result\HSBC\HsbcAchResultAdapter;
@@ -21,8 +22,11 @@ class FileGeneratorTest extends Orchestra\Testbench\TestCase
         $config = require 'config/ach_processor_test.php';
         $this -> app['config'] -> set('ach_processor',
             [
-                'hsbc' => [
-                    'company_a' => $config['hsbc']['company_a']
+                'hsbc_mri' => [
+                    'company_a' => $config['hsbc_mri']['company_a']
+                ],
+                'hsbc_ifile' => [
+                    'company_a' => $config['hsbc_ifile']['company_a']
                 ],
                 'uob' => [
                     'company_a' => $config['uob']['company_a']
@@ -59,13 +63,23 @@ class FileGeneratorTest extends Orchestra\Testbench\TestCase
         }
     }
 
-    public function testHSBCDownload()
+    public function testHSBCMriDownload()
     {
         echo "\r\n\r\n";
 
         // Create an array of BeneficiaryAdapterInterface
         $beneficiaries = TestPayment::all();
-        $ach = HsbcAchUploadProcessorFactory::create($beneficiaries, 'ach_processor.hsbc.company_a', 'CashoutOct17');
+        $ach = HsbcAchUploadProcessorFactory::create($beneficiaries, 'ach_processor.hsbc_mri.company_a', 'CashoutOct17');
+        echo $ach -> getString();
+    }
+
+    public function testHSBCIFileDownload()
+    {
+        echo "\r\n\r\n";
+
+        // Create an array of BeneficiaryAdapterInterface
+        $beneficiaries = TestPayment::all();
+        $ach = HsbcAchIFileUploadProcessorFactory::create($beneficiaries, 'ach_processor.hsbc_ifile.company_a', 'CashoutOct17');
         echo $ach -> getString();
     }
 

@@ -19,5 +19,9 @@ class ExampleBeneficiaryAdapter extends BeneficiaryAdapterAbstract implements Be
         $this -> bankCode = $model -> testUser -> bank_code;
         $this -> bankBranchCode = $model -> testUser -> bank_branch_code;
         $this -> payeeName = strtoupper( $model -> testUser -> fullname );
+
+        $this -> title = $model -> testUser -> title;
+        $this -> email = $model -> testUser -> email;
+        $this -> payeeIdentificationNumber = $model -> testUser -> payeeIdentificationNumber;
     }
 }
