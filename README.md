@@ -36,6 +36,12 @@ echo $ach -> getString();
 
 ``` php
 $beneficiaries = TestPayment::all();
+$ach = HsbcAchIFileUploadProcessorFactory::create($beneficiaries, 'ach_processor.hsbc_ifile.company_a', 'CashoutOct17');
+echo $ach -> getString();
+```
+
+``` php
+$beneficiaries = TestPayment::all();
 $ach = UobAchUploadProcessorFactory::create($beneficiaries, 'ach_processor.uob.company_a', 'CashoutOct17');
 echo $ach -> getString();
 ```
