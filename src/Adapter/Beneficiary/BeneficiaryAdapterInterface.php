@@ -53,8 +53,14 @@ interface BeneficiaryAdapterInterface
     public function getEmail();
 
     /**
-     * [Second Party Details] Second party Identifier (For Malaysian it would be NRIC number) (Maximum length: 12)
+     * [Second Party Details] Second party Identifier (Has to be unique) (Maximum length: 12)
      * @return string
      */
-    public function getPayeeIdentificationNumber();
+    public function getSecondPartyIdentifier();
+
+    /**
+     * [Second Party Details] Second party reference (For Malaysian it would be NRIC number) (Maximum length: 12)
+     * @return string
+     */
+    public function getSecondPartyReference();
 }

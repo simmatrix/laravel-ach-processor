@@ -18,7 +18,8 @@ abstract class BeneficiaryAdapterAbstract implements BeneficiaryAdapterInterface
     // HSBC iFile
     protected $title;
     protected $email;
-    protected $payeeIdentificationNumber;
+    protected $secondPartyIdentifier;
+    protected $secondPartyReference;
 
     /**
      * @param model
@@ -99,12 +100,21 @@ abstract class BeneficiaryAdapterAbstract implements BeneficiaryAdapterInterface
     }
 
     /**
-     * [Second Party Details] Second party Identifier (For Malaysian it would be NRIC number)
-     * @return string $payeeIdentificationNumber
+     * [Second Party Details] Second party Identifier (Has to be unique)
+     * @return string $secondPartyIdentifier
      */
-    public function getPayeeIdentificationNumber()
+    public function getSecondPartyIdentifier()
     {
-        return $this -> payeeIdentificationNumber;
+        return $this -> secondPartyIdentifier;
+    }
+
+    /**
+     * [Second Party Details] Second party reference (For Malaysian it would be NRIC number)
+     * @return string $secondPartyReference
+     */
+    public function getSecondPartyReference()
+    {
+        return $this -> secondPartyReference;
     }
 
     /**
